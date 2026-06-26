@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DevOPS Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="top-bar">
+    <h1>DevOPS</h1>
+    <nav class="tools-nav" aria-label="Narzędzia DevOPS">
+      <a href="#" target="_blank" rel="noopener noreferrer">Riverbed NetIM</a>
+      <a href="#" target="_blank" rel="noopener noreferrer">Riverbed NetProfiler</a>
+      <a href="#" target="_blank" rel="noopener noreferrer">Riverbed Portal</a>
+      <a href="#" target="_blank" rel="noopener noreferrer">Riverbed FlowGateway</a>
+      <a href="#" target="_blank" rel="noopener noreferrer">IBM Tivoli</a>
+      <details class="dropdown">
+        <summary>Sondy</summary>
+        <ul>
+          <li><button type="button" class="probe-link" data-probe="Legionowo">Legionowo</button></li>
+          <li><button type="button" class="probe-link" data-probe="Bydgoszcz">Bydgoszcz</button></li>
+          <li><button type="button" class="probe-link" data-probe="Wrocław">Wrocław</button></li>
+          <li><button type="button" class="probe-link" data-probe="Kraków">Kraków</button></li>
+          <li><button type="button" class="probe-link" data-probe="Gdynia">Gdynia</button></li>
+          <li><button type="button" class="probe-link" data-probe="Rakowiecka">Rakowiecka</button></li>
+          <li><button type="button" class="probe-link" data-probe="Wawelska">Wawelska</button></li>
+          <li><button type="button" class="probe-link" data-probe="Radiowa">Radiowa</button></li>
+          <li><button type="button" class="probe-link" data-probe="Opole">Opole</button></li>
+        </ul>
+      </details>
+    </nav>
+  </header>
+
+  <main class="layout">
+    <section class="map-panel">
+      <h2>Mapa Polski</h2>
+      <div class="map-wrapper">
+        <svg viewBox="0 0 600 600" class="poland-map" role="img" aria-label="Mapa Polski z zaznaczonymi sondami">
+          <path d="M153 130 L260 90 L350 95 L448 130 L495 210 L487 300 L510 395 L455 490 L390 530 L300 545 L210 520 L150 465 L108 390 L90 305 L120 222 Z" class="country-shape"></path>
+          <g id="map-markers"></g>
+        </svg>
+      </div>
+    </section>
+
+    <section class="list-panel">
+      <h2>Elementy</h2>
+      <ul id="elements-list" aria-label="Lista sond"></ul>
+    </section>
+  </main>
+
+  <script>
+    const probes = [
+      { name: "Legionowo", x: 335, y: 220 },
+      { name: "Bydgoszcz", x: 275, y: 205 },
+      { name: "Wrocław", x: 210, y: 375 },
+      { name: "Kraków", x: 315, y: 420 },
+      { name: "Gdynia", x: 250, y: 145 },
+      { name: "Rakowiecka", x: 320, y: 245 },
+      { name: "Wawelska", x: 314, y: 252 },
+      { name: "Radiowa", x: 306, y: 241 },
+      { name: "Opole", x: 246, y: 365 }
+    ];
+
+    const markersGroup = document.getElementById("map-markers");
+    const list = document.getElementById("elements-list");
+    const probeLinks = document.querySelectorAll(".probe-link");
+
+    function render() {
+      probes.forEach((probe) => {
+        const marker = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        marker.setAttribute("cx", probe.x);
+        marker.setAttribute("cy", probe.y);
+        marker.setAttribute("r", "7");
+        marker.setAttribute("class", "marker");
+        marker.dataset.probe = probe.name;
+        markersGroup.appendChild(marker);
+
+        const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        label.setAttribute("x", probe.x + 10);
+        label.setAttribute("y", probe.y - 10);
+        label.setAttribute("class", "marker-label");
+        label.dataset.probeLabel = probe.name;
+        label.textContent = probe.name;
+        markersGroup.appendChild(label);
+
+        const item = document.createElement("li");
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "list-item";
+        button.dataset.probe = probe.name;
+        button.textContent = probe.name;
+        item.appendChild(button);
+        list.appendChild(item);
+      });
+    }
+
+    function highlightProbe(name) {
+      document.querySelectorAll(".marker").forEach((marker) => {
+        marker.classList.toggle("active", marker.dataset.probe === name);
+      });
+
+      document.querySelectorAll(".marker-label").forEach((label) => {
+        label.classList.toggle("active", label.dataset.probeLabel === name);
+      });
+
+      document.querySelectorAll(".list-item").forEach((item) => {
+        item.classList.toggle("active", item.dataset.probe === name);
+      });
+
+      document.querySelectorAll(".probe-link").forEach((link) => {
+        link.classList.toggle("active", link.dataset.probe === name);
+      });
+    }
+
+    function attachEvents() {
+      list.addEventListener("click", (event) => {
+        if (event.target.matches(".list-item")) {
+          highlightProbe(event.target.dataset.probe);
+        }
+      });
+
+      probeLinks.forEach((link) => {
+        link.addEventListener("click", () => {
+          highlightProbe(link.dataset.probe);
+        });
+      });
+    }
+
+    render();
+    attachEvents();
+    highlightProbe("Legionowo");
+  </script>
+</body>
+</html>
