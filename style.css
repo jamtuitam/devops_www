@@ -5,8 +5,12 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: #f5f7fa;
-  color: #1b2636;
+  background: #0b1220;
+  color: #d6deea;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .top-bar {
@@ -15,7 +19,7 @@ body {
   align-items: center;
   gap: 1rem;
   padding: 1rem 1.5rem;
-  background: #0f2942;
+  background: #081425;
   color: #fff;
 }
 
@@ -37,8 +41,8 @@ body {
 .probe-link {
   color: #fff;
   text-decoration: none;
-  background: #1e4b78;
-  border: 1px solid #2f679d;
+  background: #1a3554;
+  border: 1px solid #2a4c73;
   border-radius: 6px;
   padding: 0.45rem 0.7rem;
   font-size: 0.9rem;
@@ -48,7 +52,7 @@ body {
 .tools-nav a:hover,
 .dropdown summary:hover,
 .probe-link:hover {
-  background: #2a6399;
+  background: #24486f;
 }
 
 .dropdown {
@@ -62,8 +66,8 @@ body {
   list-style: none;
   margin: 0;
   padding: 0.5rem;
-  background: #0f2942;
-  border: 1px solid #2f679d;
+  background: #0a1b32;
+  border: 1px solid #2a4c73;
   border-radius: 8px;
   min-width: 170px;
   z-index: 50;
@@ -79,9 +83,9 @@ body {
 }
 
 .probe-link.active {
-  background: #f79824;
-  color: #111;
-  border-color: #f79824;
+  background: #d18a2f;
+  color: #081425;
+  border-color: #d18a2f;
 }
 
 .layout {
@@ -89,16 +93,17 @@ body {
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
   padding: 1rem;
-  height: calc(100vh - 76px);
+  flex: 1;
+  min-height: 0;
 }
 
 .map-panel,
 .list-panel {
-  background: #fff;
-  border: 1px solid #d3deea;
+  background: #111d31;
+  border: 1px solid #223955;
   border-radius: 10px;
   padding: 1rem;
-  overflow: auto;
+  overflow: hidden;
 }
 
 .map-panel h2,
@@ -109,41 +114,59 @@ body {
 .map-wrapper {
   width: 100%;
   height: calc(100% - 2rem);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.poland-map {
+.map-canvas {
+  position: relative;
+  height: 100%;
+  aspect-ratio: 1280 / 1245;
+  max-width: 100%;
+}
+
+.poland-map-image {
   width: 100%;
   height: 100%;
-  min-height: 520px;
+  display: block;
+  border-radius: 8px;
 }
 
-.country-shape {
-  fill: #dde7f2;
-  stroke: #52769a;
-  stroke-width: 4;
+.map-markers {
+  position: absolute;
+  inset: 0;
 }
 
 .marker {
-  fill: #275d90;
-  stroke: #fff;
-  stroke-width: 2;
-  transition: transform 0.2s ease, fill 0.2s ease;
-  transform-origin: center;
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid #0e1c31;
+  background: #4d86bb;
+  transform: translate(-50%, -50%);
+  transition: transform 0.2s ease, background 0.2s ease;
 }
 
 .marker.active {
-  fill: #f79824;
-  transform: scale(1.35);
+  background: #d18a2f;
+  transform: translate(-50%, -50%) scale(1.35);
 }
 
 .marker-label {
-  fill: #20466d;
+  position: absolute;
+  transform: translate(10px, -12px);
+  color: #bcd0e6;
   font-size: 14px;
   font-weight: 700;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+  white-space: nowrap;
+  pointer-events: none;
 }
 
 .marker-label.active {
-  fill: #c86d00;
+  color: #e2ab5d;
 }
 
 #elements-list {
@@ -157,8 +180,9 @@ body {
 .list-item {
   width: 100%;
   text-align: left;
-  border: 1px solid #c5d4e4;
-  background: #f4f8fc;
+  border: 1px solid #2a4768;
+  background: #18283f;
+  color: #d6deea;
   border-radius: 8px;
   padding: 0.65rem 0.7rem;
   cursor: pointer;
@@ -166,12 +190,12 @@ body {
 }
 
 .list-item:hover {
-  background: #e6f0fa;
+  background: #213754;
 }
 
 .list-item.active {
-  border-color: #f79824;
-  background: #fff1df;
+  border-color: #d18a2f;
+  background: #2a3344;
 }
 
 @media (max-width: 1100px) {

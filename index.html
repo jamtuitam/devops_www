@@ -36,10 +36,10 @@
     <section class="map-panel">
       <h2>Mapa Polski</h2>
       <div class="map-wrapper">
-        <svg viewBox="0 0 600 600" class="poland-map" role="img" aria-label="Mapa Polski z zaznaczonymi sondami">
-          <path d="M153 130 L260 90 L350 95 L448 130 L495 210 L487 300 L510 395 L455 490 L390 530 L300 545 L210 520 L150 465 L108 390 L90 305 L120 222 Z" class="country-shape"></path>
-          <g id="map-markers"></g>
-        </svg>
+        <div class="map-canvas" role="img" aria-label="Mapa Polski z zaznaczonymi sondami">
+          <img src="mapa.png" alt="Mapa Polski" class="poland-map-image">
+          <div id="map-markers" class="map-markers"></div>
+        </div>
       </div>
     </section>
 
@@ -51,15 +51,15 @@
 
   <script>
     const probes = [
-      { name: "Legionowo", x: 335, y: 220 },
-      { name: "Bydgoszcz", x: 275, y: 205 },
-      { name: "Wrocław", x: 210, y: 375 },
-      { name: "Kraków", x: 315, y: 420 },
-      { name: "Gdynia", x: 250, y: 145 },
-      { name: "Rakowiecka", x: 320, y: 245 },
-      { name: "Wawelska", x: 314, y: 252 },
-      { name: "Radiowa", x: 306, y: 241 },
-      { name: "Opole", x: 246, y: 365 }
+      { name: "Legionowo", x: 55.78, y: 36.71 },
+      { name: "Bydgoszcz", x: 45.78, y: 34.14 },
+      { name: "Wrocław", x: 34.92, y: 62.49 },
+      { name: "Kraków", x: 52.42, y: 69.96 },
+      { name: "Gdynia", x: 41.64, y: 24.18 },
+      { name: "Rakowiecka", x: 53.28, y: 40.8 },
+      { name: "Wawelska", x: 52.27, y: 42.01 },
+      { name: "Radiowa", x: 50.94, y: 40.16 },
+      { name: "Opole", x: 40.94, y: 60.8 }
     ];
 
     const markersGroup = document.getElementById("map-markers");
@@ -68,18 +68,17 @@
 
     function render() {
       probes.forEach((probe) => {
-        const marker = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-        marker.setAttribute("cx", probe.x);
-        marker.setAttribute("cy", probe.y);
-        marker.setAttribute("r", "7");
-        marker.setAttribute("class", "marker");
+        const marker = document.createElement("div");
+        marker.className = "marker";
+        marker.style.left = `${probe.x}%`;
+        marker.style.top = `${probe.y}%`;
         marker.dataset.probe = probe.name;
         markersGroup.appendChild(marker);
 
-        const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        label.setAttribute("x", probe.x + 10);
-        label.setAttribute("y", probe.y - 10);
-        label.setAttribute("class", "marker-label");
+        const label = document.createElement("div");
+        label.className = "marker-label";
+        label.style.left = `${probe.x}%`;
+        label.style.top = `${probe.y}%`;
         label.dataset.probeLabel = probe.name;
         label.textContent = probe.name;
         markersGroup.appendChild(label);
