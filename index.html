@@ -34,11 +34,21 @@
 
   <main class="layout">
     <section class="map-panel">
-      <h2>Mapa Polski</h2>
+      <div class="map-header">
+        <div>
+        </div>
+        <div class="map-status">9 aktywnych punktów</div>
+      </div>
       <div class="map-wrapper">
-        <div class="map-canvas" role="img" aria-label="Mapa Polski z zaznaczonymi sondami">
-          <img src="mapa.png" alt="Mapa Polski" class="poland-map-image">
-          <div id="map-markers" class="map-markers"></div>
+        <div class="map-frame">
+          <div class="map-canvas" role="img" aria-label="Mapa Polski z zaznaczonymi sondami">
+            <img src="mapa.svg" alt="Mapa Polski" class="poland-map-image">
+            <div id="map-markers" class="map-markers"></div>
+          </div>
+          <div class="map-legend" aria-hidden="true">
+            <span class="legend-dot"></span>
+            <span>Aktywna sonda</span>
+          </div>
         </div>
       </div>
     </section>
@@ -51,36 +61,66 @@
 
   <script>
     const probes = [
-      { name: "Legionowo", x: 55.78, y: 36.71 },
-      { name: "Bydgoszcz", x: 45.78, y: 34.14 },
-      { name: "Wrocław", x: 34.92, y: 62.49 },
-      { name: "Kraków", x: 52.42, y: 69.96 },
-      { name: "Gdynia", x: 41.64, y: 24.18 },
-      { name: "Rakowiecka", x: 53.28, y: 40.8 },
-      { name: "Wawelska", x: 52.27, y: 42.01 },
-      { name: "Radiowa", x: 50.94, y: 40.16 },
-      { name: "Opole", x: 40.94, y: 60.8 }
+      { name: "Legionowo", lat: 52.4015, lng: 20.9261 },
+      { name: "Bydgoszcz", lat: 53.1235, lng: 18.0084 },
+      { name: "Wrocław", lat: 51.1079, lng: 17.0385 },
+      { name: "Kraków", lat: 50.0647, lng: 19.945 },
+      { name: "Gdynia", lat: 54.5189, lng: 18.5305 },
+      { name: "Rakowiecka", lat: 52.2157, lng: 21.0152 },
+      { name: "Wawelska", lat: 52.2166, lng: 20.9859 },
+      { name: "Radiowa", lat: 52.2578, lng: 20.9131 },
+      { name: "Opole", lat: 50.6751, lng: 17.9213 }
     ];
+
+    const mapProjection = {
+      north: 55.05,
+      south: 49.0,
+      west: 14.1,
+      east: 24.25,
+      paddingLeft: 8,
+      paddingRight: 10,
+      paddingTop: 7,
+      paddingBottom: 9
+    };
 
     const markersGroup = document.getElementById("map-markers");
     const list = document.getElementById("elements-list");
     const probeLinks = document.querySelectorAll(".probe-link");
 
+    function projectProbePosition(probe) {
+      const usableWidth = 100 - mapProjection.paddingLeft - mapProjection.paddingRight;
+      const usableHeight = 100 - mapProjection.paddingTop - mapProjection.paddingBottom;
+      const lngRatio = (probe.lng - mapProjection.west) / (mapProjection.east - mapProjection.west);
+      const latRatio = (mapProjection.north - probe.lat) / (mapProjection.north - mapProjection.south);
+
+      return {
+        x: mapProjection.paddingLeft + (lngRatio * usableWidth),
+        y: mapProjection.paddingTop + (latRatio * usableHeight)
+      };
+    }
+
     function render() {
       probes.forEach((probe) => {
+        const position = projectProbePosition(probe);
         const marker = document.createElement("div");
         marker.className = "marker";
-        marker.style.left = `${probe.x}%`;
-        marker.style.top = `${probe.y}%`;
+        marker.style.left = `${position.x}%`;
+        marker.style.top = `${position.y}%`;
         marker.dataset.probe = probe.name;
+        marker.tabIndex = 0;
+        marker.setAttribute("role", "button");
+        marker.setAttribute("aria-label", `Wybierz sondę ${probe.name}`);
         markersGroup.appendChild(marker);
 
         const label = document.createElement("div");
         label.className = "marker-label";
-        label.style.left = `${probe.x}%`;
-        label.style.top = `${probe.y}%`;
+        label.style.left = `${position.x}%`;
+        label.style.top = `${position.y}%`;
         label.dataset.probeLabel = probe.name;
         label.textContent = probe.name;
+        label.tabIndex = 0;
+        label.setAttribute("role", "button");
+        label.setAttribute("aria-label", `Wybierz sondę ${probe.name}`);
         markersGroup.appendChild(label);
 
         const item = document.createElement("li");
@@ -113,6 +153,31 @@
     }
 
     function attachEvents() {
+      markersGroup.addEventListener("click", (event) => {
+        const target = event.target.closest(".marker, .marker-label");
+
+        if (!target) {
+          return;
+        }
+
+        highlightProbe(target.dataset.probe || target.dataset.probeLabel);
+      });
+
+      markersGroup.addEventListener("keydown", (event) => {
+        if (event.key !== "Enter" && event.key !== " ") {
+          return;
+        }
+
+        const target = event.target.closest(".marker, .marker-label");
+
+        if (!target) {
+          return;
+        }
+
+        event.preventDefault();
+        highlightProbe(target.dataset.probe || target.dataset.probeLabel);
+      });
+
       list.addEventListener("click", (event) => {
         if (event.target.matches(".list-item")) {
           highlightProbe(event.target.dataset.probe);
@@ -130,8 +195,5 @@
     attachEvents();
     highlightProbe("Legionowo");
   </script>
-
-
-//test
 </body>
 </html>
