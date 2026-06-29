@@ -61,15 +61,19 @@
 
   <script>
     const probes = [
-      { name: "Legionowo", lat: 52.4015, lng: 20.9261 },
-      { name: "Bydgoszcz", lat: 53.1235, lng: 18.0084 },
-      { name: "Wrocław", lat: 51.1079, lng: 17.0385 },
-      { name: "Kraków", lat: 50.0647, lng: 19.945 },
-      { name: "Gdynia", lat: 54.5189, lng: 18.5305 },
-      { name: "Rakowiecka", lat: 52.2157, lng: 21.0152 },
-      { name: "Wawelska", lat: 52.2166, lng: 20.9859 },
-      { name: "Radiowa", lat: 52.2578, lng: 20.9131 },
-      { name: "Opole", lat: 50.6751, lng: 17.9213 }
+      { name: "Legionowo", lat: 52.4015, lng: 20.9261, offsetX: 0.15, offsetY: -0.9 },
+      { name: "Bydgoszcz", lat: 53.1235, lng: 18.0084, offsetX: -1.15, offsetY: -0.55 },
+      { name: "Wrocław", lat: 51.1079, lng: 17.0385, offsetX: -0.55, offsetY: 0.15 },
+      { name: "NetIM", lat: 51.1079, lng: 17.0385, offsetX: 1.05, offsetY: -1.2, showInList: false },
+      { name: "NetProfiler", lat: 51.1079, lng: 17.0385, offsetX: 1.9, offsetY: -0.2, showInList: false },
+      { name: "Flow Gateway", lat: 51.1079, lng: 17.0385, offsetX: 1.1, offsetY: 1.0, showInList: false },
+      { name: "Portal", lat: 51.1079, lng: 17.0385, offsetX: -0.15, offsetY: -1.45, showInList: false },
+      { name: "Kraków", lat: 50.0647, lng: 19.945, offsetX: 0.45, offsetY: 0.7 },
+      { name: "Gdynia", lat: 54.5189, lng: 18.5305, offsetX: -0.6, offsetY: -1.25 },
+      { name: "Rakowiecka", lat: 52.2157, lng: 21.0152, offsetX: 0.35, offsetY: -0.15 },
+      { name: "Wawelska", lat: 52.2166, lng: 20.9859, offsetX: -0.2, offsetY: 0.3 },
+      { name: "Radiowa", lat: 52.2578, lng: 20.9131, offsetX: -0.9, offsetY: 0 },
+      { name: "Opole", lat: 50.6751, lng: 17.9213, offsetX: 0.35, offsetY: 0.45 }
     ];
 
     const mapProjection = {
@@ -94,8 +98,8 @@
       const latRatio = (mapProjection.north - probe.lat) / (mapProjection.north - mapProjection.south);
 
       return {
-        x: mapProjection.paddingLeft + (lngRatio * usableWidth),
-        y: mapProjection.paddingTop + (latRatio * usableHeight)
+        x: mapProjection.paddingLeft + (lngRatio * usableWidth) + (probe.offsetX || 0),
+        y: mapProjection.paddingTop + (latRatio * usableHeight) + (probe.offsetY || 0)
       };
     }
 
@@ -123,14 +127,16 @@
         label.setAttribute("aria-label", `Wybierz sondę ${probe.name}`);
         markersGroup.appendChild(label);
 
-        const item = document.createElement("li");
-        const button = document.createElement("button");
-        button.type = "button";
-        button.className = "list-item";
-        button.dataset.probe = probe.name;
-        button.textContent = probe.name;
-        item.appendChild(button);
-        list.appendChild(item);
+        if (probe.showInList !== false) {
+          const item = document.createElement("li");
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "list-item";
+          button.dataset.probe = probe.name;
+          button.textContent = probe.name;
+          item.appendChild(button);
+          list.appendChild(item);
+        }
       });
     }
 
