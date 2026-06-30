@@ -34,11 +34,6 @@
 
   <main class="layout">
     <section class="map-panel">
-      <div class="map-header">
-        <div>
-        </div>
-        <div class="map-status">9 aktywnych punktów</div>
-      </div>
       <div class="map-wrapper">
         <div class="map-frame">
           <div class="map-canvas" role="img" aria-label="Mapa Polski z zaznaczonymi sondami">
@@ -54,42 +49,180 @@
     </section>
 
     <section class="list-panel">
-      <h2>Sondy</h2>
-      <ul id="elements-list" aria-label="Lista sond"></ul>
+      <section class="collapsible-section service-section is-expanded" aria-labelledby="sondy-heading">
+        <h2 id="sondy-heading">
+          <button type="button" class="section-toggle" aria-expanded="true">Sondy</button>
+        </h2>
+        <ul id="elements-list" class="section-body" aria-label="Lista sond"></ul>
+      </section>
+
+      <section class="collapsible-section service-section is-expanded" aria-labelledby="riverbed-heading">
+        <h3 id="riverbed-heading">
+          <button type="button" class="section-toggle" aria-expanded="true">Riverbed</button>
+        </h3>
+        <ul class="service-list section-body" aria-label="Usługi Riverbed">
+          <li>
+            <button type="button" class="service-link panel-item" data-url="https://netim.example.local" data-ip="10.40.12.15" data-ping-host="10.40.12.15" data-contact="noc-riverbed@example.local">
+              Riverbed NetIM
+            </button>
+          </li>
+          <li>
+            <button type="button" class="service-link panel-item" data-url="https://netprofiler.example.local" data-ip="10.40.12.16" data-ping-host="10.40.12.16" data-contact="noc-riverbed@example.local">
+              Riverbed NetProfiler
+            </button>
+          </li>
+          <li>
+            <button type="button" class="service-link panel-item" data-url="https://flowgateway.example.local" data-ip="10.40.12.17" data-ping-host="10.40.12.17" data-contact="noc-riverbed@example.local">
+              Riverbed FlowGateway
+            </button>
+          </li>
+          <li>
+            <button type="button" class="service-link panel-item" data-url="https://portal.example.local" data-ip="10.40.12.18" data-ping-host="10.40.12.18" data-contact="noc-riverbed@example.local">
+              Riverbed Portal
+            </button>
+          </li>
+        </ul>
+      </section>
+
+      <section class="collapsible-section service-section is-expanded" aria-labelledby="ibm-heading">
+        <h3 id="ibm-heading">
+          <button type="button" class="section-toggle" aria-expanded="true">IBM Tivoli</button>
+        </h3>
+        <ul class="service-list section-body" aria-label="Usługi IBM Tivoli">
+          <li>
+            <button type="button" class="service-link panel-item" data-url="https://tivoli.example.local" data-ip="10.50.21.10" data-ping-host="10.50.21.10" data-contact="noc-ibm@example.local">
+              Serwer
+            </button>
+          </li>
+        </ul>
+      </section>
     </section>
   </main>
 
   <script>
     const probes = [
-      { name: "Legionowo", lat: 52.4015, lng: 20.9261, offsetX: 0.15, offsetY: -0.9 },
-      { name: "Bydgoszcz", lat: 53.1235, lng: 18.0084, offsetX: -1.15, offsetY: -0.55 },
-      { name: "Wrocław", lat: 51.1079, lng: 17.0385, offsetX: -0.55, offsetY: 0.15 },
-      { name: "NetIM", lat: 51.1079, lng: 17.0385, offsetX: 1.05, offsetY: -1.2, showInList: false },
-      { name: "NetProfiler", lat: 51.1079, lng: 17.0385, offsetX: 1.9, offsetY: -0.2, showInList: false },
-      { name: "Flow Gateway", lat: 51.1079, lng: 17.0385, offsetX: 1.1, offsetY: 1.0, showInList: false },
-      { name: "Portal", lat: 51.1079, lng: 17.0385, offsetX: -0.15, offsetY: -1.45, showInList: false },
-      { name: "Kraków", lat: 50.0647, lng: 19.945, offsetX: 0.45, offsetY: 0.7 },
-      { name: "Gdynia", lat: 54.5189, lng: 18.5305, offsetX: -0.6, offsetY: -1.25 },
-      { name: "Rakowiecka", lat: 52.2157, lng: 21.0152, offsetX: 0.35, offsetY: -0.15 },
-      { name: "Wawelska", lat: 52.2166, lng: 20.9859, offsetX: -0.2, offsetY: 0.3 },
-      { name: "Radiowa", lat: 52.2578, lng: 20.9131, offsetX: -0.9, offsetY: 0 },
-      { name: "Opole", lat: 50.6751, lng: 17.9213, offsetX: 0.35, offsetY: 0.45 }
+      { name: "Legionowo", lat: 52.4015, lng: 20.9261, offsetX: 0.25, offsetY: -0.55, url: "https://legionowo.example.local", ip: "10.10.1.11", pingHost: "10.10.1.11", contact: "noc-legionowo@example.local" },
+      { name: "Bydgoszcz", lat: 53.1235, lng: 18.0084, offsetX: -0.75, offsetY: -0.45, url: "https://bydgoszcz.example.local", ip: "10.10.2.11", pingHost: "10.10.2.11", contact: "noc-bydgoszcz@example.local" },
+      { name: "Wrocław", lat: 51.1079, lng: 17.0385, offsetX: -0.2, offsetY: 0.1, area: "Wrocław", url: "https://wroclaw.example.local", ip: "10.10.3.11", pingHost: "10.10.3.11", contact: "noc-wroclaw@example.local" },
+      { name: "NetIM", lat: 51.1079, lng: 17.0385, offsetX: 0.95, offsetY: -0.9, area: "Wrocław", showInList: false, url: "https://netim.example.local", ip: "10.40.12.15", pingHost: "10.40.12.15", contact: "noc-riverbed@example.local" },
+      { name: "NetProfiler", lat: 51.1079, lng: 17.0385, offsetX: 1.35, offsetY: -0.1, area: "Wrocław", showInList: false, url: "https://netprofiler.example.local", ip: "10.40.12.16", pingHost: "10.40.12.16", contact: "noc-riverbed@example.local" },
+      { name: "Flow Gateway", lat: 51.1079, lng: 17.0385, offsetX: 0.9, offsetY: 0.85, area: "Wrocław", showInList: false, url: "https://flowgateway.example.local", ip: "10.40.12.17", pingHost: "10.40.12.17", contact: "noc-riverbed@example.local" },
+      { name: "Portal", lat: 51.1079, lng: 17.0385, offsetX: -0.15, offsetY: -1.2, area: "Wrocław", showInList: false, url: "https://portal.example.local", ip: "10.40.12.18", pingHost: "10.40.12.18", contact: "noc-riverbed@example.local" },
+      { name: "Kraków", lat: 50.0647, lng: 19.945, offsetX: 0.3, offsetY: 0.55, url: "https://krakow.example.local", ip: "10.10.4.11", pingHost: "10.10.4.11", contact: "noc-krakow@example.local" },
+      { name: "Gdynia", lat: 54.5189, lng: 18.5305, offsetX: -0.45, offsetY: -1.0, url: "https://gdynia.example.local", ip: "10.10.5.11", pingHost: "10.10.5.11", contact: "noc-gdynia@example.local" },
+      { name: "Rakowiecka", lat: 52.2157, lng: 21.0152, offsetX: 0.15, offsetY: -0.05, area: "Warszawa", url: "https://rakowiecka.example.local", ip: "10.10.6.11", pingHost: "10.10.6.11", contact: "noc-warszawa@example.local" },
+      { name: "Wawelska", lat: 52.2166, lng: 20.9859, offsetX: -0.1, offsetY: 0.2, area: "Warszawa", url: "https://wawelska.example.local", ip: "10.10.7.11", pingHost: "10.10.7.11", contact: "noc-warszawa@example.local" },
+      { name: "Radiowa", lat: 52.2578, lng: 20.9131, offsetX: -0.55, offsetY: 0.1, area: "Warszawa", url: "https://radiowa.example.local", ip: "10.10.8.11", pingHost: "10.10.8.11", contact: "noc-warszawa@example.local" },
+      { name: "Opole", lat: 50.6751, lng: 17.9213, offsetX: 0.25, offsetY: 0.35, url: "https://opole.example.local", ip: "10.10.9.11", pingHost: "10.10.9.11", contact: "noc-opole@example.local" }
     ];
 
+    const areaAnchors = {
+      "Wrocław": { lat: 51.1079, lng: 17.0385, offsetX: 0.35, offsetY: -0.15 },
+      "Warszawa": { lat: 52.2297, lng: 21.0122, offsetX: 0.25, offsetY: 0.1 }
+    };
+
     const mapProjection = {
-      north: 55.05,
-      south: 49.0,
+      north: 54.95,
+      south: 49.05,
       west: 14.1,
-      east: 24.25,
-      paddingLeft: 8,
-      paddingRight: 10,
-      paddingTop: 7,
-      paddingBottom: 9
+      east: 24.2,
+      paddingLeft: 7.5,
+      paddingRight: 9.2,
+      paddingTop: 6.4,
+      paddingBottom: 8.5
     };
 
     const markersGroup = document.getElementById("map-markers");
     const list = document.getElementById("elements-list");
+    const listPanel = document.querySelector(".list-panel");
+    const mapCanvas = document.querySelector(".map-canvas");
     const probeLinks = document.querySelectorAll(".probe-link");
+    let openGroupPanel = null;
+    let pingChecksEnabled = true;
+
+    function formatPanelButtonContent(label) {
+      return `
+        <span class="panel-item-main">${label}</span>
+        <span class="availability-dot" aria-hidden="true"></span>
+      `;
+    }
+
+    function setAvailabilityState(button, state) {
+      button.dataset.availability = state;
+      const titles = {
+        online: "Dostepny",
+        offline: "Niedostepny",
+        unknown: "Status nieznany"
+      };
+      button.title = `${button.dataset.baseLabel || button.textContent.trim()} - ${titles[state] || titles.unknown}`;
+    }
+
+    async function fetchPingStatus(host) {
+      const response = await fetch(`/api/ping?host=${encodeURIComponent(host)}`, {
+        method: "GET",
+        cache: "no-store"
+      });
+
+      if (!response.ok) {
+        throw new Error("Ping endpoint unavailable");
+      }
+
+      const payload = await response.json();
+      return Boolean(payload?.online);
+    }
+
+    async function refreshAvailability() {
+      if (!pingChecksEnabled) {
+        return;
+      }
+
+      const targets = listPanel.querySelectorAll(".panel-item[data-ping-host]");
+
+      for (const button of targets) {
+        const host = button.dataset.pingHost;
+
+        if (!host) {
+          setAvailabilityState(button, "unknown");
+          continue;
+        }
+
+        try {
+          const isOnline = await fetchPingStatus(host);
+          setAvailabilityState(button, isOnline ? "online" : "offline");
+        } catch {
+          // Endpoint ping nie jest dostepny (np. lokalny podglad pliku).
+          // Ustawiamy status nieznany i wylaczamy dalsze odpytywanie.
+          pingChecksEnabled = false;
+          setAvailabilityState(button, "unknown");
+          for (const unresolved of targets) {
+            if (!unresolved.dataset.availability) {
+              setAvailabilityState(unresolved, "unknown");
+            }
+          }
+          break;
+        }
+      }
+    }
+
+    function groupProbesByArea() {
+      const grouped = new Map();
+
+      probes.forEach((probe) => {
+        const groupKey = probe.area || probe.name;
+
+        if (!grouped.has(groupKey)) {
+          grouped.set(groupKey, []);
+        }
+
+        grouped.get(groupKey).push(probe);
+      });
+
+      return Array.from(grouped.entries()).map(([area, members]) => ({
+        area,
+        members,
+        position: projectProbePosition(areaAnchors[area] || members[0])
+      }));
+    }
 
     function projectProbePosition(probe) {
       const usableWidth = 100 - mapProjection.paddingLeft - mapProjection.paddingRight;
@@ -104,49 +237,216 @@
     }
 
     function render() {
-      probes.forEach((probe) => {
-        const position = projectProbePosition(probe);
+      const groupedAreas = groupProbesByArea();
+
+      groupedAreas.forEach((group) => {
+        const isGroupedArea = group.members.length > 1;
+        const position = group.position;
+        const memberNames = group.members.map((member) => member.name).join("|");
+        const markerTitle = isGroupedArea ? `${group.area} (${group.members.length})` : group.members[0].name;
+
         const marker = document.createElement("div");
-        marker.className = "marker";
+        marker.className = `marker${isGroupedArea ? " marker-group" : ""}`;
         marker.style.left = `${position.x}%`;
         marker.style.top = `${position.y}%`;
-        marker.dataset.probe = probe.name;
+        marker.dataset.groupMembers = memberNames;
+
+        if (isGroupedArea) {
+          marker.dataset.groupArea = group.area;
+        } else {
+          marker.dataset.probe = group.members[0].name;
+        }
+
         marker.tabIndex = 0;
         marker.setAttribute("role", "button");
-        marker.setAttribute("aria-label", `Wybierz sondę ${probe.name}`);
+        marker.setAttribute("aria-label", `Wybierz sondę ${markerTitle}`);
         markersGroup.appendChild(marker);
 
         const label = document.createElement("div");
-        label.className = "marker-label";
+        label.className = `marker-label${isGroupedArea ? " marker-label-group" : ""}`;
         label.style.left = `${position.x}%`;
         label.style.top = `${position.y}%`;
-        label.dataset.probeLabel = probe.name;
-        label.textContent = probe.name;
+        label.dataset.groupMembers = memberNames;
+
+        if (isGroupedArea) {
+          label.dataset.groupArea = group.area;
+        } else {
+          label.dataset.probeLabel = group.members[0].name;
+        }
+
+        label.textContent = markerTitle;
         label.tabIndex = 0;
         label.setAttribute("role", "button");
-        label.setAttribute("aria-label", `Wybierz sondę ${probe.name}`);
+        label.setAttribute("aria-label", `Wybierz sondę ${markerTitle}`);
         markersGroup.appendChild(label);
+      });
 
-        if (probe.showInList !== false) {
-          const item = document.createElement("li");
-          const button = document.createElement("button");
-          button.type = "button";
-          button.className = "list-item";
-          button.dataset.probe = probe.name;
-          button.textContent = probe.name;
-          item.appendChild(button);
-          list.appendChild(item);
+      probes.forEach((probe) => {
+        if (probe.showInList === false) {
+          return;
+        }
+
+        const item = document.createElement("li");
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "list-item panel-item";
+        button.dataset.probe = probe.name;
+        button.dataset.url = probe.url || "#";
+        button.dataset.ip = probe.ip || "brak";
+        button.dataset.pingHost = probe.pingHost || probe.ip || "";
+        button.dataset.contact = probe.contact || "brak";
+        button.dataset.baseLabel = probe.name;
+        button.innerHTML = formatPanelButtonContent(probe.name);
+        setAvailabilityState(button, "unknown");
+        item.appendChild(button);
+        list.appendChild(item);
+      });
+
+      listPanel.querySelectorAll(".service-link.panel-item").forEach((button) => {
+        const label = button.textContent.trim();
+        button.dataset.baseLabel = label;
+        button.innerHTML = formatPanelButtonContent(label);
+        setAvailabilityState(button, "unknown");
+      });
+    }
+
+    function closeGroupPanel() {
+      if (openGroupPanel) {
+        openGroupPanel.remove();
+        openGroupPanel = null;
+      }
+    }
+
+    function toggleGroupPanel(target) {
+      const areaName = target.dataset.groupArea;
+      const memberNames = (target.dataset.groupMembers || "").split("|").filter(Boolean);
+
+      if (!areaName || !memberNames.length) {
+        return;
+      }
+
+      if (openGroupPanel && openGroupPanel.dataset.area === areaName) {
+        closeGroupPanel();
+        return;
+      }
+
+      closeGroupPanel();
+
+      const panel = document.createElement("div");
+      panel.className = "map-group-panel";
+      panel.dataset.area = areaName;
+      panel.style.left = target.style.left;
+      panel.style.top = target.style.top;
+
+      const title = document.createElement("div");
+      title.className = "map-group-title";
+      title.textContent = areaName;
+      panel.appendChild(title);
+
+      const groupList = document.createElement("ul");
+      groupList.className = "map-group-list";
+
+      memberNames.forEach((name) => {
+        const row = document.createElement("li");
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "map-group-item";
+        btn.textContent = name;
+        btn.addEventListener("click", (event) => {
+          event.stopPropagation();
+          highlightProbe(name);
+          closeGroupPanel();
+        });
+        row.appendChild(btn);
+        groupList.appendChild(row);
+      });
+
+      panel.appendChild(groupList);
+      markersGroup.appendChild(panel);
+      openGroupPanel = panel;
+    }
+
+    function closeAllExpanded(exceptNode) {
+      listPanel.querySelectorAll(".item-expand").forEach((panel) => {
+        if (panel !== exceptNode) {
+          panel.remove();
+        }
+      });
+
+      listPanel.querySelectorAll(".panel-item.expanded").forEach((item) => {
+        if (!exceptNode || item.parentElement !== exceptNode.parentElement) {
+          item.classList.remove("expanded");
         }
       });
     }
 
+    function createExpandPanel(button) {
+      const panel = document.createElement("div");
+      panel.className = "item-expand";
+
+      const actions = document.createElement("div");
+      actions.className = "item-actions";
+
+      const goLink = document.createElement("a");
+      goLink.className = "item-action-btn";
+      goLink.target = "_blank";
+      goLink.rel = "noopener noreferrer";
+      goLink.href = button.dataset.url || "#";
+      goLink.textContent = "PRZEJDŹ";
+      actions.appendChild(goLink);
+
+      const detailsBtn = document.createElement("button");
+      detailsBtn.type = "button";
+      detailsBtn.className = "item-action-btn";
+      detailsBtn.textContent = "SZCZEGÓŁY";
+      actions.appendChild(detailsBtn);
+
+      const detailsBody = document.createElement("div");
+      detailsBody.className = "item-details";
+      detailsBody.hidden = true;
+      detailsBody.innerHTML = `<p>IP: ${button.dataset.ip || "brak"}</p><p>Kontakt: ${button.dataset.contact || "brak"}</p>`;
+
+      detailsBtn.addEventListener("click", (event) => {
+        event.stopPropagation();
+        detailsBody.hidden = !detailsBody.hidden;
+      });
+
+      panel.appendChild(actions);
+      panel.appendChild(detailsBody);
+
+      return panel;
+    }
+
+    function toggleExpand(button) {
+      const row = button.closest("li");
+
+      if (!row) {
+        return;
+      }
+
+      const currentPanel = row.querySelector(".item-expand");
+
+      if (currentPanel) {
+        currentPanel.remove();
+        button.classList.remove("expanded");
+        return;
+      }
+
+      closeAllExpanded();
+      const expandPanel = createExpandPanel(button);
+      row.appendChild(expandPanel);
+      button.classList.add("expanded");
+    }
+
     function highlightProbe(name) {
       document.querySelectorAll(".marker").forEach((marker) => {
-        marker.classList.toggle("active", marker.dataset.probe === name);
+        const members = (marker.dataset.groupMembers || marker.dataset.probe || "").split("|");
+        marker.classList.toggle("active", members.includes(name));
       });
 
       document.querySelectorAll(".marker-label").forEach((label) => {
-        label.classList.toggle("active", label.dataset.probeLabel === name);
+        const members = (label.dataset.groupMembers || label.dataset.probeLabel || "").split("|");
+        label.classList.toggle("active", members.includes(name));
       });
 
       document.querySelectorAll(".list-item").forEach((item) => {
@@ -166,6 +466,13 @@
           return;
         }
 
+        if (target.dataset.groupArea) {
+          toggleGroupPanel(target);
+          return;
+        }
+
+        closeGroupPanel();
+
         highlightProbe(target.dataset.probe || target.dataset.probeLabel);
       });
 
@@ -181,25 +488,64 @@
         }
 
         event.preventDefault();
+
+        if (target.dataset.groupArea) {
+          toggleGroupPanel(target);
+          return;
+        }
+
+        closeGroupPanel();
         highlightProbe(target.dataset.probe || target.dataset.probeLabel);
       });
 
-      list.addEventListener("click", (event) => {
-        if (event.target.matches(".list-item")) {
-          highlightProbe(event.target.dataset.probe);
+      listPanel.addEventListener("click", (event) => {
+        const sectionToggle = event.target.closest(".section-toggle");
+
+        if (sectionToggle) {
+          const section = sectionToggle.closest(".collapsible-section");
+
+          if (!section) {
+            return;
+          }
+
+          const isExpanded = section.classList.toggle("is-expanded");
+          sectionToggle.setAttribute("aria-expanded", String(isExpanded));
+          return;
         }
+
+        const button = event.target.closest(".panel-item");
+
+        if (!button) {
+          return;
+        }
+
+        if (button.dataset.probe) {
+          closeGroupPanel();
+          highlightProbe(button.dataset.probe);
+        }
+
+        toggleExpand(button);
       });
 
       probeLinks.forEach((link) => {
         link.addEventListener("click", () => {
+          closeGroupPanel();
           highlightProbe(link.dataset.probe);
         });
+      });
+
+      mapCanvas.addEventListener("click", (event) => {
+        if (!event.target.closest(".map-group-panel") && !event.target.closest(".marker-group") && !event.target.closest(".marker-label-group")) {
+          closeGroupPanel();
+        }
       });
     }
 
     render();
     attachEvents();
     highlightProbe("Legionowo");
+    refreshAvailability();
+    setInterval(refreshAvailability, 30000);
   </script>
 </body>
 </html>
