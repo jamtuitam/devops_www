@@ -139,6 +139,7 @@
     const probeLinks = document.querySelectorAll(".probe-link");
     let openGroupPanel = null;
     let pingChecksEnabled = true;
+    const probeStatus = new Map();
 
     function formatPanelButtonContent(label) {
       return `
@@ -157,6 +158,46 @@
       button.title = `${button.dataset.baseLabel || button.textContent.trim()} - ${titles[state] || titles.unknown}`;
     }
 
+    function getGroupStatus(memberNames) {
+      const states = memberNames.map((name) => probeStatus.get(name) || "unknown");
+      const onlineCount = states.filter((state) => state === "online").length;
+      const offlineCount = states.filter((state) => state === "offline").length;
+      const unknownCount = states.filter((state) => state === "unknown").length;
+
+      if (unknownCount === states.length) {
+        return "unknown";
+      }
+
+      if (onlineCount === states.length) {
+        return "online";
+      }
+
+      if (offlineCount === states.length) {
+        return "offline";
+      }
+
+      return "degraded";
+    }
+
+    function applyMapStatusClass(node, status) {
+      node.classList.remove("marker-status-online", "marker-status-offline", "marker-status-unknown", "marker-status-degraded");
+      node.classList.add(`marker-status-${status}`);
+    }
+
+    function updateMapAvailabilityStyles() {
+      markersGroup.querySelectorAll(".marker, .marker-label").forEach((node) => {
+        const memberNames = (node.dataset.groupMembers || node.dataset.probe || node.dataset.probeLabel || "")
+          .split("|")
+          .filter(Boolean);
+
+        if (!memberNames.length) {
+          return;
+        }
+
+        applyMapStatusClass(node, getGroupStatus(memberNames));
+      });
+    }
+
     async function fetchPingStatus(host) {
       const response = await fetch(`/api/ping?host=${encodeURIComponent(host)}`, {
         method: "GET",
@@ -173,10 +214,37 @@
 
     async function refreshAvailability() {
       if (!pingChecksEnabled) {
+        updateMapAvailabilityStyles();
         return;
       }
 
       const targets = listPanel.querySelectorAll(".panel-item[data-ping-host]");
+      const hostCache = new Map();
+
+      for (const probe of probes) {
+        const host = probe.pingHost || probe.ip;
+
+        if (!host) {
+          probeStatus.set(probe.name, "unknown");
+          continue;
+        }
+
+        if (!hostCache.has(host)) {
+          try {
+            const isOnline = await fetchPingStatus(host);
+            hostCache.set(host, isOnline ? "online" : "offline");
+          } catch {
+            pingChecksEnabled = false;
+            hostCache.set(host, "unknown");
+          }
+        }
+
+        probeStatus.set(probe.name, hostCache.get(host) || "unknown");
+
+        if (!pingChecksEnabled) {
+          break;
+        }
+      }
 
       for (const button of targets) {
         const host = button.dataset.pingHost;
@@ -186,9 +254,16 @@
           continue;
         }
 
+        if (hostCache.has(host)) {
+          setAvailabilityState(button, hostCache.get(host));
+          continue;
+        }
+
         try {
           const isOnline = await fetchPingStatus(host);
-          setAvailabilityState(button, isOnline ? "online" : "offline");
+          const state = isOnline ? "online" : "offline";
+          hostCache.set(host, state);
+          setAvailabilityState(button, state);
         } catch {
           // Endpoint ping nie jest dostepny (np. lokalny podglad pliku).
           // Ustawiamy status nieznany i wylaczamy dalsze odpytywanie.
@@ -202,6 +277,8 @@
           break;
         }
       }
+
+      updateMapAvailabilityStyles();
     }
 
     function groupProbesByArea() {
@@ -544,6 +621,7 @@
     render();
     attachEvents();
     highlightProbe("Legionowo");
+    updateMapAvailabilityStyles();
     refreshAvailability();
     setInterval(refreshAvailability, 30000);
   </script>

@@ -230,6 +230,26 @@ body {
   transform: translate(-50%, -50%) scale(1.35);
 }
 
+.marker-status-online {
+  background: linear-gradient(180deg, #7be5a8 0%, #31a867 100%);
+  box-shadow: 0 0 0 8px rgba(60, 217, 125, 0.2);
+}
+
+.marker-status-offline {
+  background: linear-gradient(180deg, #ff8787 0%, #d14848 100%);
+  box-shadow: 0 0 0 8px rgba(239, 74, 74, 0.22);
+}
+
+.marker-status-unknown {
+  background: linear-gradient(180deg, #9fb2c8 0%, #617891 100%);
+  box-shadow: 0 0 0 8px rgba(123, 142, 166, 0.22);
+}
+
+.marker-status-degraded {
+  background: linear-gradient(180deg, #f3d27d 0%, #cf9842 100%);
+  box-shadow: 0 0 0 8px rgba(209, 138, 47, 0.24);
+}
+
 .marker-group {
   width: 38px;
   height: 38px;
@@ -246,7 +266,7 @@ body {
   background: rgba(7, 18, 33, 0.72);
   backdrop-filter: blur(8px);
   color: #d6e4f2;
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 700;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.55);
   white-space: nowrap;
@@ -269,8 +289,28 @@ body {
   background: rgba(50, 34, 12, 0.88);
 }
 
+.marker-label.marker-status-online {
+  border-color: rgba(60, 217, 125, 0.45);
+  background: rgba(20, 57, 38, 0.82);
+}
+
+.marker-label.marker-status-offline {
+  border-color: rgba(239, 74, 74, 0.45);
+  background: rgba(74, 24, 24, 0.82);
+}
+
+.marker-label.marker-status-unknown {
+  border-color: rgba(123, 142, 166, 0.45);
+  background: rgba(35, 46, 63, 0.82);
+}
+
+.marker-label.marker-status-degraded {
+  border-color: rgba(209, 138, 47, 0.45);
+  background: rgba(70, 50, 21, 0.84);
+}
+
 .marker-label-group {
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .map-group-panel {

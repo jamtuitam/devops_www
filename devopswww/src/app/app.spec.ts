@@ -14,10 +14,13 @@ describe('App', () => {
     expect(app).toBeTruthy();
   });
 
-  it('should render title', async () => {
+  it('should render dashboard sections', async () => {
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, devopswww');
+    const toggleLabels = Array.from(compiled.querySelectorAll('.section-toggle')).map((el) => el.textContent?.trim());
+    expect(toggleLabels).toContain('Sondy');
+    expect(toggleLabels).toContain('Riverbed');
+    expect(toggleLabels).toContain('IBM Tivoli');
   });
 });
